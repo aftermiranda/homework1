@@ -1,0 +1,80 @@
+---
+title: "Homework 1"
+author: "Miranda Johnson, 22208561"
+date: today
+format: 
+  pdf:
+    toc: true
+execute:
+  eval: true
+  echo: false
+---
+
+# Volcano Topographic Information 
+
+```{r}
+#| label: libraries-data
+
+# load required libraries
+library(lattice)
+library(viridisLite)
+
+# import data from R
+data("volcano")
+```
+
+Plotting topographic information can be done in several ways.  Generally, heat maps, contour plots, and wireframes do a good job of showing this type of data.  Base R has the functions `heatmap()` and `filled.contour()`.  Lattice has several appropriate plotting options, including `levelplot()`, `contourplot()`, and `wireframe()`.
+
+For the purpose of this exercise, let us examine the `filled.contour()` and `contourplot()`. In theory, we should get very similar results for these two plotting functions, but there are distinct advantages and disadvantages of each option.
+
+## Contour Plot Using `filled.contour()`
+
+```{r}
+#| label: plot-filledcontour
+#| fig-width: 8
+#| fig-height: 6
+
+# base R filled.contour plot
+# asp - aspect ratio (y/x)
+# fixed nlevels to ensure consistent plotting
+
+filled.contour(volcano, asp = 61/87, nlevels = 25,
+               plot.title = title(
+                 main = "Topographic Information on Auckland's Maunga Whau Volcano",
+                 sub = "Plotted using filled.contour() in Base R",
+                 xlab = "East < -- > West",
+                 ylab = "South < -- > North"),
+               color.palette = magma,
+               )
+```
+
+The `filled.contour()` function in base R provides a reasonable plot of the volcano data.  This function provides smoothing at the levels' edges which is more representative of the natural formations we would expect to see in topographic data.
+
+The main drawback of using this method is the limited ability to adjust the **shape** of the plot. In the given data, the x-axis represents a total of 870m, while the y-axis represents only 610m, but the default output is square shaped. To force appropriate scaling, `asp` has to be evaluated based on the length of the axes. Even when the aspect ratio is adjusted, if the size of the figure is specified, the axes don't line up with the image properly.  
+
+The default values along the axes are not helpful in understanding the data. We already know that the x-axis is longer than the y-axis, so having the limits of both being [0,1] gives a false impression of the axes being the same length.
+
+An additional drawback is that the default subtitle doesn't appear significantly different from the x-axis label, leading to lack of clarity in the distinction between these labels.
+
+
+## Contour Plot Using `contourplot()`
+
+```{r}
+#| label: plot-contourplot
+#| fig-width: 8
+#| fig-height: 7
+
+# contourplot from library(lattice)
+# cuts fixed to match previous plot
+# labels = FALSE removes numeric labels on contours
+# region = TRUE colors the contours
+contourplot(volcano, col.regions = magma(100), cuts = 25, labels = FALSE, region = TRUE,
+          xlab = "East < -- > West", ylab = "South < -- > North",
+          main = "Topographic Information on Auckland's Maunga Whau Volcano",
+          sub = "Plotted using contourplot() from Lattice package",
+          )
+```
+
+Using `contourplot()` from the `lattice` package gives a clearer visualization of the contours by drawing the contour lines on the plot.  This function also automatically scales the aspect ratio assuming each cell is square by default.  The default axis labels indicate the row/column numbers, which gives us a better indication of scale than the `filled.contour()` gives by default.  The **title** and **subtitle** are clearly distinct from the axis labels, and margins are automatically adjusted to give a clean image.
+
+The `contourplot()` function does not provide an easy way to change the *color* of the contour lines, or to smooth the contours.
