@@ -2,9 +2,7 @@
 title: "Homework 1"
 author: "Miranda Johnson, 22208561"
 date: today
-format: 
-  pdf:
-    toc: true
+format: pdf
 execute:
   eval: true
   echo: false
