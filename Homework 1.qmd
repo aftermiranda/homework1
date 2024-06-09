@@ -1,14 +1,16 @@
 ---
-title: "Homework 1"
+title: "STAT40830 - Homework 1"
 author: "Miranda Johnson, 22208561"
 date: today
-format: pdf
+format: 
+  pdf:
+    toc: true
 execute:
   eval: true
   echo: false
 ---
 
-# Volcano Topographic Information 
+# \textcolor{purple}{Volcano Topographic Information}
 
 ```{r}
 #| label: libraries-data
